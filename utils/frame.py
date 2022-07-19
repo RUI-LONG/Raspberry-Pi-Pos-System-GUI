@@ -1,7 +1,7 @@
 from tkinter import *
-from .widgets import CustomButtons
+from .widgets import CustomButtons, Calculator
 
-class frameSettings(CustomButtons):
+class frameSettings(CustomButtons, Calculator):
     def set_all_frames(self):
         # 1 layer
         self.seperate_main_frame()
@@ -35,21 +35,21 @@ class frameSettings(CustomButtons):
         self.category_frame = LabelFrame(self.upper_frame, bd=5, \
             width=int(_width), height=int(self.max_h-self.h_parition), \
             bg="#404040", font=self.font, fg="#FFFFFF", text="類別", relief="flat")
-        self.category_frame.grid(row=0, column=0, padx=15, pady=20)
+        self.category_frame.grid(row=0, column=0, padx=15, pady=15)
 
     def set_goods_list_frame(self):
         _width = self.max_w*0.6
         goods_list_frame = Frame(self.upper_frame, bd=5, \
             width=int(_width), height=int(self.max_h-self.h_parition), \
             bg="#6B6E70", cursor="circle")
-        goods_list_frame.grid(row=0, column=1, padx=0, pady=10)
+        goods_list_frame.grid(row=0, column=1, padx=0, pady=15)
 
     def set_options_frame(self):
         _width = self.max_w*0.2
         options_frame = Frame(self.upper_frame, bd=5, \
             width=int(_width), height=int(self.max_h-self.h_parition), \
             bg="#404040", cursor="circle")
-        options_frame.grid(row=0, column=2, padx=15, pady=10)
+        options_frame.grid(row=0, column=2, padx=15, pady=15)
 
     def set_check_list_frame(self):
         _width = self.max_w*0.4
@@ -65,6 +65,10 @@ class frameSettings(CustomButtons):
             bg="#6B6E70", cursor="circle")
         calculator_frame.grid(row=0, column=1, padx=0, pady=10)
 
+        # 7 = (padx/2)
+        frame_size = (_width-7, self.h_parition)
+        self.create_calculator(calculator_frame, frame_size)
+
     def set_checkout_frame(self):
         _width = self.max_w*0.3
         checkout_frame = Frame(self.lower_frame, bd=5, \
@@ -72,7 +76,16 @@ class frameSettings(CustomButtons):
             bg="#404040", cursor="circle")
         checkout_frame.grid(row=0, column=2, padx=15, pady=10)
 
-        self.exit_button(checkout_frame)
+        _buttons = {
+            "折扣": (_width*0.03, self.h_parition*0.54),
+            "信用卡": (_width*0.36, self.h_parition*0.54),
+            "小計": (_width*0.03, self.h_parition*0.72),
+            "結帳": (_width*0.36, self.h_parition*0.72),
+        }
+        _button_size = (_width*0.015, self.h_parition*0.003)
+        self.create_buttons(checkout_frame, _button_size, _buttons)
+
+        self.exit_button(checkout_frame, (_width*0.72, self.h_parition*0.03))
     
 
 
