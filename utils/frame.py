@@ -1,7 +1,9 @@
 from tkinter import *
-from .widgets import CustomButtons, Calculator
+from .widgets import CustomButtons, CustomLabels
+from .components import Calculator, Cashier
+from .callback import Callback
 
-class frameSettings(CustomButtons, Calculator):
+class frameSettings(CustomButtons, CustomLabels, Calculator, Cashier):
     def set_all_frames(self):
         # 1 layer
         self.seperate_main_frame()
@@ -15,6 +17,9 @@ class frameSettings(CustomButtons, Calculator):
         self.set_check_list_frame()
         self.set_calculator_frame()
         self.set_checkout_frame()
+
+    def set_all_category_fonts(self, font):
+        self.category_font = font
 
     def seperate_main_frame(self):
         self.main_frame = Frame(self.root, bg="#050505")
@@ -34,7 +39,7 @@ class frameSettings(CustomButtons, Calculator):
         _width = self.max_w*0.2
         self.category_frame = LabelFrame(self.upper_frame, bd=5, \
             width=int(_width), height=int(self.max_h-self.h_parition), \
-            bg="#404040", font=self.font, fg="#FFFFFF", text="類別", relief="flat")
+            bg="#404040", font=self.category_font, fg="#FFFFFF", text="類別", relief="flat")
         self.category_frame.grid(row=0, column=0, padx=15, pady=15)
 
     def set_goods_list_frame(self):
@@ -55,7 +60,7 @@ class frameSettings(CustomButtons, Calculator):
         _width = self.max_w*0.4
         self.check_list_frame = LabelFrame(self.lower_frame, bd=5, \
             width=int(_width), height=int(self.h_parition), \
-            bg="#6B6E70", font=self.font, text="類別", relief="flat")
+            bg="#6B6E70", font=self.category_font, text="類別", relief="flat")
         self.check_list_frame.grid(row=0, column=0, padx=15, pady=10)
 
     def set_calculator_frame(self):
@@ -76,14 +81,8 @@ class frameSettings(CustomButtons, Calculator):
             bg="#404040", cursor="circle")
         checkout_frame.grid(row=0, column=2, padx=15, pady=10)
 
-        _buttons = {
-            "折扣": (_width*0.03, self.h_parition*0.54),
-            "信用卡": (_width*0.36, self.h_parition*0.54),
-            "小計": (_width*0.03, self.h_parition*0.72),
-            "結帳": (_width*0.36, self.h_parition*0.72),
-        }
-        _button_size = (_width*0.015, self.h_parition*0.003)
-        self.create_buttons(checkout_frame, _button_size, _buttons)
+
+        self.create_casher(checkout_frame, (_width, self.h_parition))
 
         self.exit_button(checkout_frame, (_width*0.72, self.h_parition*0.03))
     

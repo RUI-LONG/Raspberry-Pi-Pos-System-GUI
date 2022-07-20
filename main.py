@@ -2,18 +2,17 @@ import matplotlib
 matplotlib.use('Agg')
 
 from tkinter import *
-import tkinter as tk
 from utils.settings import Settings
 from utils.frame import frameSettings
-from utils.widgets import Cashier
 
-class POS(Settings, frameSettings, Cashier):
+class POS(Settings, frameSettings):
     def __init__(self, root):
         self.root = root
         self.set_user_config()
-
+        
         self.set_all_button_fonts(('Adobe 黑体 Std R', 24, 'normal'))
-        self.init_casher()
+        self.set_all_category_fonts(('Adobe 黑体 Std R', 24, 'normal'))
+        self.set_all_label_fonts(('Adobe 黑体 Std R', 20, 'normal'))
         self.set_all_frames()
         
 
