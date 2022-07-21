@@ -1,9 +1,9 @@
 from tkinter import *
-from .widgets import CustomButtons, CustomLabels
+from .widgets import CustomButtons, CustomLabels, CustomVariables
 from .components import Calculator, Cashier
 from .callback import Callback
 
-class frameSettings(CustomButtons, CustomLabels, Calculator, Cashier):
+class frameSettings(CustomButtons, CustomLabels, CustomVariables, Callback, Calculator, Cashier):
     def set_all_frames(self):
         # 1 layer
         self.seperate_main_frame()
@@ -71,7 +71,7 @@ class frameSettings(CustomButtons, CustomLabels, Calculator, Cashier):
         calculator_frame.grid(row=0, column=1, padx=0, pady=10)
 
         # 7 = (padx/2)
-        frame_size = (_width-7, self.h_parition)
+        frame_size = (_width, self.h_parition)
         self.create_calculator(calculator_frame, frame_size)
 
     def set_checkout_frame(self):

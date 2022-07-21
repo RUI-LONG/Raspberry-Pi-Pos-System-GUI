@@ -12,13 +12,38 @@ class CustomButtons:
             height=_height, width=_width)
         exit_button.place(x=int(position[0]), y=int(position[1]))
 
-    def create_buttons(self, frame, button_size, button_dict, bg, call_back=False):
+    def _handle_font_dict(self, font_dict):
+        if font_dict:
+            return {
+                "bg": font_dict.get("bg", "#404040"),
+                "fg": font_dict.get("fg", "#ffffff"),
+                "font": font_dict.get("font", self.button_font),
+                "bd": font_dict.get("bd", 0)
+            }
+        else:
+            return {
+                "bg": "#404040",
+                "fg": "#ffffff",
+                "font": self.button_font,
+                "bd": 0
+            }
+
+    def create_buttons(self, frame, button_size, button_dict, font_dict=None, call_back=False):
+        font_dict = self._handle_font_dict(font_dict)
+
         for k, v in button_dict.items():
-            b = Button(frame, font=self.button_font, text=k, \
-                height=int(button_size[1]), width=int(button_size[0]), bg=bg)
-            if call_back:
-                b.bind("<Button-1>", call_back)
-            b.place(x=int(v[0]), y=int(v[1]))
+            if isinstance(call_back, dict):
+                _button = Button(frame, font=font_dict["font"], text=k, \
+                    height=int(button_size[1]), width=int(button_size[0]), \
+                    bg=font_dict["bg"], fg=font_dict["fg"], bd=font_dict["bd"],\
+                    anchor="center", command = call_back[k])
+            else:
+                _button = Button(frame, font=font_dict["font"], text=k, \
+                    height=int(button_size[1]), width=int(button_size[0]), \
+                    bg=font_dict["bg"], fg=font_dict["fg"], bd=font_dict["bd"])
+                if call_back:
+                    _button.bind("<Button-1>", call_back)
+            _button.place(x=int(v[0]), y=int(v[1]))
 
 class CustomLabels:
     def set_all_label_fonts(self, font):
@@ -32,9 +57,24 @@ class CustomLabels:
                 "font": self.label_font
             }
         for k, v in label_dict.items():
-            l = Label(frame, font=font_dict["font"], text=k, fg=font_dict["fg"], \
+            _label = Label(frame, font=font_dict["font"], text=k, fg=font_dict["fg"], \
                 height=int(label_size[1]), width=int(label_size[0]), bg=font_dict["bg"])
-            l.place(x=int(v[0]), y=int(v[1]))
+            _label.place(x=int(v[0]), y=int(v[1]))
 
 class CustomVariables:
     pass
+
+    def create_variables(self, frame, var_size, var_dict=None, font_dict=None):
+        if not font_dict:
+            font_dict = {
+                "bg": "#ffffff",
+                "fg": "#404040",
+                "font": self.label_font
+            }
+        for k, v in var_dict.items():
+            _var = Label(frame, textvariable=getattr(self, k), \
+                font=font_dict["font"], text=k, fg=font_dict["fg"], \
+                height=int(var_size[1]), width=int(var_size[0]), bg=font_dict["bg"], \
+                anchor="e"
+            )
+            _var.place(x=int(v[0]), y=int(v[1]))
