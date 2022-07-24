@@ -14,3 +14,10 @@ class Callback:
     
     def press_clear(self, item):
         self.cash_input.set("0")
+    
+    def change_category(self):
+
+        for _button in self.item_buttons:
+            _button.grid_forget()
+        selected_category = list(self.items.keys())[self.radio_var.get()]
+        self.create_items(self.item_list_frame, selected_category)

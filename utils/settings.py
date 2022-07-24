@@ -1,8 +1,9 @@
 from .data_loader import read_json, write_json
 
 class Settings:
-    def set_user_config(self):
+    def load_configs(self):
         self._get_screen_info()
+        self._load_item_config()
         if self.config.get("full_screen"): 
             self.set_full_screen()
         else:
@@ -13,9 +14,12 @@ class Settings:
         self.root.overrideredirect(False)
         self.root.attributes('-fullscreen',True)
 
+    def _load_item_config(self):
+        _config_path = "./utils/item_config.json"
+        self.items = read_json(_config_path)
+
     def _get_screen_info(self):
         _config_path = "./utils/app_config.json"
-
         self.config = read_json(_config_path)
         if not self.config.get("screen_width") or not self.config.get("screen_height"):
             self.config["screen_width"] = self.root.winfo_screenwidth()

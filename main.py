@@ -8,7 +8,7 @@ from utils.frame import frameSettings
 class POS(Settings, frameSettings):
     def __init__(self, root):
         self.root = root
-        self.set_user_config()
+        self.load_configs()
         
         self.create_vaiables()
         self.set_all_button_fonts(('Adobe 黑体 Std R', 24, 'normal'))

@@ -1,18 +1,18 @@
 from tkinter import *
 from .widgets import CustomButtons, CustomLabels, CustomVariables
-from .components import Calculator, Cashier
+from .components import Calculator, Cashier, Items
 from .callback import Callback
 
-class frameSettings(CustomButtons, CustomLabels, CustomVariables, Callback, Calculator, Cashier):
+class frameSettings(CustomButtons, CustomLabels, CustomVariables, Callback, Calculator, Cashier, Items):
     def set_all_frames(self):
         # 1 layer
         self.seperate_main_frame()
-        
+
         # 2 layer upper frame
         self.set_category_frame()
-        self.set_goods_list_frame()
+        self.set_item_list_frame()
         self.set_options_frame()
-
+        
         # 2 layer lower frame
         self.set_check_list_frame()
         self.set_calculator_frame()
@@ -27,32 +27,39 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, Callback, Calc
         
         # Seperate to upper & lower frame
         self.h_parition = self.max_h*0.45
+        self.lower_parition = int(self.max_h-self.h_parition)
+
         self.lower_frame = Frame(self.main_frame, bd=0, \
             width=self.max_w, height=int(self.h_parition), bg="#050505")
         self.lower_frame.pack(side="bottom")
 
         self.upper_frame = Frame(self.main_frame, bd=0, \
-            width=self.max_w, height=int(self.max_h-self.h_parition), bg="#050505")
+            width=self.max_w, height=self.lower_parition, bg="#050505")
         self.upper_frame.pack(side="bottom")
 
     def set_category_frame(self):
-        _width = self.max_w*0.2
-        self.category_frame = LabelFrame(self.upper_frame, bd=5, \
-            width=int(_width), height=int(self.max_h-self.h_parition), \
+        _width = self.max_w*0.1
+        category_frame = LabelFrame(self.upper_frame, bd=5, \
+            width=int(_width), height=self.lower_parition, \
             bg="#404040", font=self.category_font, fg="#FFFFFF", text="類別", relief="flat")
-        self.category_frame.grid(row=0, column=0, padx=15, pady=15)
+        category_frame.grid(row=0, column=0, padx=15, pady=15)
 
-    def set_goods_list_frame(self):
-        _width = self.max_w*0.6
-        goods_list_frame = Frame(self.upper_frame, bd=5, \
-            width=int(_width), height=int(self.max_h-self.h_parition), \
+        self.create_category(category_frame, (_width, self.lower_parition))
+
+    def set_item_list_frame(self):
+        self.item_frame_width = self.max_w*0.65
+        self.item_list_frame = Frame(self.upper_frame, bd=5, \
+            width=int(self.item_frame_width), height=self.lower_parition, \
             bg="#6B6E70", cursor="circle")
-        goods_list_frame.grid(row=0, column=1, padx=0, pady=15)
+        self.item_list_frame.grid(row=0, column=1, padx=0, pady=15)
+
+        selected_category = list(self.items.keys())[self.radio_var.get()]
+        self.create_items(self.item_list_frame, selected_category)
 
     def set_options_frame(self):
-        _width = self.max_w*0.2
+        _width = self.max_w*0.25
         options_frame = Frame(self.upper_frame, bd=5, \
-            width=int(_width), height=int(self.max_h-self.h_parition), \
+            width=int(_width), height=self.lower_parition, \
             bg="#404040", cursor="circle")
         options_frame.grid(row=0, column=2, padx=15, pady=15)
 
@@ -81,10 +88,8 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, Callback, Calc
             bg="#404040", cursor="circle")
         checkout_frame.grid(row=0, column=2, padx=15, pady=10)
 
-
         self.create_casher(checkout_frame, (_width, self.h_parition))
-
-        self.exit_button(checkout_frame, (_width*0.72, self.h_parition*0.03))
+        self.create_exit_button(checkout_frame, (_width*0.72, self.h_parition*0.03))
     
 
 

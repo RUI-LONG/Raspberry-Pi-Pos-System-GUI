@@ -40,7 +40,7 @@ class Calculator:
             "fg": "black",
             "bd": 2
         }
-        self.create_buttons(frame, _button_size, _buttons, _fonts, _call_back)
+        self.place_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
         _buttons = {
             "清除": (_pad_w+_button_size[0]*18, _pad_h*4+_button_size[1]*60),
@@ -50,7 +50,7 @@ class Calculator:
             "fg": "white",
             "bd": 2
         }
-        self.create_buttons(frame, (_button_size[0]*2, _button_size[1]), _buttons, _fonts, \
+        self.place_buttons(frame, (_button_size[0]*2, _button_size[1]), _buttons, _fonts, \
             {"清除": lambda: self.press_clear("0")})
 
 class Cashier:
@@ -59,11 +59,13 @@ class Cashier:
         self.total = StringVar()
         self.cash_input = StringVar()
         self.change = StringVar()
+        self.radio_var = IntVar()
 
         self.amount.set("0")
         self.total.set("0")
         self.cash_input.set("0")
         self.change.set("0")
+        self.radio_var.set(0)
 
     def create_casher(self, frame, frame_size):
         self.casher_frame = frame
@@ -88,29 +90,79 @@ class Cashier:
         _line_size = (self.casher_width*0.04, self.casher_height*0.001)
         self.create_labels(self.casher_frame, _line_size, _split_line)
 
+        _position_x = self.casher_width*0.23
         var_dict = {
-            "amount": (self.casher_width*0.23, self.casher_height*0.022),
-            "total": (self.casher_width*0.23, self.casher_height*0.142),
+            "amount": (_position_x, self.casher_height*0.022),
+            "total": (_position_x, self.casher_height*0.142),
 
-            "cash_input": (self.casher_width*0.23, self.casher_height*0.300),
-            "change": (self.casher_width*0.23, self.casher_height*0.422),
+            "cash_input": (_position_x, self.casher_height*0.3),
+            "change": (_position_x, self.casher_height*0.422),
         }
         var_size = (self.casher_width*0.025, self.casher_height*0.003)
-        
         self.create_variables(self.casher_frame, var_size, var_dict)
 
     def _create_checkout_buttons(self):
+        _grid_x0, _grid_y0 = self.casher_width*0.03, self.casher_height*0.54
+        _grid_x1, _grid_y1 = self.casher_width*0.36, self.casher_height*0.72
+
         _buttons = {
-            "折扣": (self.casher_width*0.03, self.casher_height*0.54),
-            "信用卡": (self.casher_width*0.36, self.casher_height*0.54),
-            "小計": (self.casher_width*0.03, self.casher_height*0.72),
-            "結帳": (self.casher_width*0.36, self.casher_height*0.72),
+            "折扣": (_grid_x0, _grid_y0),
+            "信用卡": (_grid_x1, _grid_y0),
+            "小計": (_grid_x0, _grid_y1),
+            "結帳": (_grid_x1, _grid_y1),
         }
         _button_size = (self.casher_width*0.015, self.casher_height*0.003)
         _fonts = {
             "bg": "white",
             "fg": "black",
-
         }
-        self.create_buttons(self.casher_frame, _button_size, _buttons, _fonts, \
+        self.place_buttons(self.casher_frame, _button_size, _buttons, _fonts, \
             call_back=self.change_button_color)
+
+class Items:
+    def create_category(self, frame, frame_size):
+        _width, _height = frame_size[0], frame_size[1]
+        _button_size = (int(_width*0.03), int(_height*0.004))
+        _pos_x, _pos_y = _button_size[0]*5, _button_size[1]*18
+
+        _buttons = {
+                _category: (_pos_x + _button_size[0], _pos_y + _button_size[1]*i*70)
+                for i, _category in enumerate(self.items.keys())
+            }
+        _call_back = {
+            _category: self.change_category for _category in self.items.keys()
+        }
+        _fonts = {
+            "bg": "white",
+            "fg": "black",
+            "bd": 10
+        }
+        # self.create_radio_buttons(frame, _button_size, _buttons, _fonts, _call_back)
+        self.create_radio_buttons(frame, _button_size, _buttons, _fonts, _call_back)
+
+    def _iter_items(self, item_list, pads):
+        _output_dict = {}
+        _x, _y = 0, 0
+        for item in item_list:
+            if _y > 3:
+                _x, _y = _x+1, 0
+            _output_dict[item["name"]] = (_x, _y, pads[0], pads[1])
+            _y += 1
+        return _output_dict
+
+
+    def create_items(self, frame, selected_category):
+        _width, _height =self.item_frame_width, self.lower_parition
+        frame.grid_propagate(False)
+        _padx, _pady = (int(_width*0.02), int(_height*0.02))
+        _button_size = (int(_width*0.01), int(_height*0.007))
+
+        _buttons = self._iter_items(self.items[selected_category], (_padx, _pady))
+
+        _fonts = {
+            "bg": "white",
+            "fg": "black",
+            "bd": 1
+        }
+
+        self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts)
