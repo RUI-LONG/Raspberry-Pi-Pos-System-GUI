@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import ttk
 
 class CustomButtons:
     def set_all_button_fonts(self, font):
@@ -117,3 +118,23 @@ class CustomVariables:
                 anchor="e"
             )
             _var.place(x=int(v[0]), y=int(v[1]))
+
+class CustomTreeview:
+    def create_treeview(self, frame, tree_size, tree_dict=None, font=None):
+        style = ttk.Style()
+        style.configure("Treeview", font=font)
+        style.configure("Treeview.Heading", font=font)
+        print(int(tree_size[1]))
+        style.configure("Treeview", rowheight=int(tree_size[1]*2))
+
+        
+        _tree_frame = ttk.Treeview(frame, height=int(tree_size[1]))
+        _tree_frame['columns'] = tuple(tree_dict.keys()) 
+        _tree_frame.column("#0", width=0,  stretch=NO)
+        _tree_frame.heading("#0",text="", anchor=CENTER)
+
+        for k, v in tree_dict.items():
+            _tree_frame.column(k,anchor=CENTER, width=v[0])
+            _tree_frame.heading(k,text=v[1], anchor=CENTER)
+        _tree_frame.pack()
+        return _tree_frame

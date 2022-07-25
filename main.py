@@ -12,7 +12,6 @@ class POS(Settings, frameSettings):
         
         self.create_vaiables()
         self.set_all_button_fonts(('Adobe 黑体 Std R', 24, 'normal'))
-        self.set_all_category_fonts(('Adobe 黑体 Std R', 24, 'normal'))
         self.set_all_label_fonts(('Adobe 黑体 Std R', 20, 'normal'))
         self.set_all_frames()
 

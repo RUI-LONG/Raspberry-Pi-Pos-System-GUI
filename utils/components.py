@@ -23,18 +23,9 @@ class Calculator:
                 "0": (_pad_w, _pad_h*4+_button_size[1]*60),
             }
         
-        _call_back = {
-            "0": lambda: self.press_number("0"),
-            "1": lambda: self.press_number("1"),
-            "2": lambda: self.press_number("2"),
-            "3": lambda: self.press_number("3"),
-            "4": lambda: self.press_number("4"),
-            "5": lambda: self.press_number("5"),
-            "6": lambda: self.press_number("6"),
-            "7": lambda: self.press_number("7"),
-            "8": lambda: self.press_number("8"),
-            "9": lambda: self.press_number("9"),
-        }
+        _lambda_fcns = [lambda i=i:self.press_number(str(i)) for i in range(10)]
+        _call_back = dict(zip([str(i) for i in range(10)], _lambda_fcns))
+
         _fonts = {
             "bg": "white",
             "fg": "black",
@@ -55,16 +46,20 @@ class Calculator:
 
 class Cashier:
     def create_vaiables(self):
-        self.amount = StringVar()
+        self.unit = StringVar()
         self.total = StringVar()
         self.cash_input = StringVar()
         self.change = StringVar()
-        self.radio_var = IntVar()
 
-        self.amount.set("0")
+        self.unit.set("0")
         self.total.set("0")
         self.cash_input.set("0")
         self.change.set("0")
+
+        self.receipt = dict()
+
+        # For Selcet Category
+        self.radio_var = IntVar()
         self.radio_var.set(0)
 
     def create_casher(self, frame, frame_size):
@@ -72,6 +67,9 @@ class Cashier:
         self.casher_width, self.casher_height = frame_size[0], frame_size[1]
         self._create_checkout_info()
         self._create_checkout_buttons()
+
+    def _create_instructions(self):
+        pass
 
     def _create_checkout_info(self):
         labels = {
@@ -92,7 +90,7 @@ class Cashier:
 
         _position_x = self.casher_width*0.23
         var_dict = {
-            "amount": (_position_x, self.casher_height*0.022),
+            "unit": (_position_x, self.casher_height*0.022),
             "total": (_position_x, self.casher_height*0.142),
 
             "cash_input": (_position_x, self.casher_height*0.3),
@@ -119,7 +117,7 @@ class Cashier:
         self.place_buttons(self.casher_frame, _button_size, _buttons, _fonts, \
             call_back=self.change_button_color)
 
-class Items:
+class Merchandise:
     def create_category(self, frame, frame_size):
         _width, _height = frame_size[0], frame_size[1]
         _button_size = (int(_width*0.03), int(_height*0.004))
@@ -137,7 +135,6 @@ class Items:
             "fg": "black",
             "bd": 10
         }
-        # self.create_radio_buttons(frame, _button_size, _buttons, _fonts, _call_back)
         self.create_radio_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
     def _iter_items(self, item_list, pads):
@@ -148,21 +145,39 @@ class Items:
                 _x, _y = _x+1, 0
             _output_dict[item["name"]] = (_x, _y, pads[0], pads[1])
             _y += 1
-        return _output_dict
+
+        _lambda_fcns = [lambda i=i:self.press_item(i) for i in item_list]
+        _call_back = dict(zip([i["name"] for i in item_list], _lambda_fcns))
+
+        return _output_dict, _call_back
 
 
     def create_items(self, frame, selected_category):
         _width, _height =self.item_frame_width, self.lower_parition
-        frame.grid_propagate(False)
         _padx, _pady = (int(_width*0.02), int(_height*0.02))
         _button_size = (int(_width*0.01), int(_height*0.007))
 
-        _buttons = self._iter_items(self.items[selected_category], (_padx, _pady))
+        _buttons, _call_back = self._iter_items(self.items[selected_category], (_padx, _pady))
 
         _fonts = {
             "bg": "white",
             "fg": "black",
             "bd": 1
         }
+        self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
-        self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts)
+class Receipt:
+    def create_receipt(self, frame, frame_size):
+        _width, _height = frame_size[0], frame_size[1]
+        tree_size = (int(_width*0.1), int(_height*0.043))
+        frame.pack_propagate(False)
+
+        tree_dict = {
+            'No': (tree_size[0], "No"), 
+            'Name': (int(tree_size[0]*6.5), "名稱"), 
+            'Unit': (tree_size[0], "數量"), 
+            'Amount': (tree_size[0], "小記")
+        }
+
+        _font = ('Adobe 黑体 Std R', 20, 'normal')
+        self.receipt_frame = self.create_treeview(frame, tree_size, tree_dict, _font)
