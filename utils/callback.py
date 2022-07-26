@@ -24,12 +24,16 @@ class Callback:
         self.change.set("0")
 
     def press_item(self, item):
+        # for press_option
+        self.item = item
         if self.receipt.get(item["name"]):
             _record_item = self.receipt[item["name"]]
             _index = _record_item[0]
             _unit = _record_item[1] + 1
             _price = int((_record_item[2] / _record_item[1]) * _unit)
-            self.receipt_frame.item(int2hex(_index), text="blub", \
+            _iid = self.receipt_frame.get_children()[_index-1]
+
+            self.receipt_frame.item(_iid, text="blub", \
                 values=(_index, item["name"], _unit, _price))
 
         else:
@@ -48,8 +52,42 @@ class Callback:
         self.unit.set(str(int(self.unit.get()) + 1))
         self.total.set(str(int(self.total.get()) + int(item["price"])))
     
+    def press_option(self, option):
+        if len(self.receipt) == 0:
+            return
+        elif option["name"] in self.item["name"]:
+            return
+        else:
+            if "$" in option["name"]:
+                option["name"] = option["name"][:option["name"].index("$")-1]
+            _index = len(self.receipt)
+            _record_item = self.receipt[self.item["name"]]
+            _unit = _record_item[1]
+            _price = _record_item[2]
+            _name_with_option = self.item["name"] + " "+ option["name"]
+            _iid = self.receipt_frame.get_children()[_index-1]
+
+            self.receipt_frame.item(_iid, text="blub", \
+                values=(_index, _name_with_option, \
+                    _unit, _price))
+
+
+            self.receipt.pop(self.item["name"], None)
+            self.item = {"name": _name_with_option, "price": _price}
+            self.receipt.update({_name_with_option: (_index, _unit, _price)})
+
     def change_category(self):
         for _button in self.item_buttons:
             _button.grid_forget()
+        
+        for _button in self.option_buttons:
+            _button.grid_forget()
         selected_category = list(self.items.keys())[self.radio_var.get()]
         self.create_items(self.item_list_frame, selected_category)
+        self.create_options(self.options_frame, selected_category)
+
+
+    def clear_receipt(self):
+        for item in self.receipt_frame.get_children():
+            self.receipt_frame.delete(item)
+        self.receipt = dict()

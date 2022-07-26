@@ -13,6 +13,15 @@ class CustomButtons:
             height=_height, width=_width)
         exit_button.place(x=int(position[0]), y=int(position[1]))
 
+    
+    def create_clear_receipt_button(self, frame, position=(50, 50)):
+        _height = int(self.max_h*0.001)
+        _width = int(self.max_w*0.002)
+        exit_button = Button(frame, command=self.clear_receipt, \
+            text="清除\n訂單", font=self.button_font, \
+            height=_height, width=_width)
+        exit_button.place(x=int(position[0]), y=int(position[1]))
+
     def _handle_font_dict(self, font_dict):
         if font_dict:
             return {
@@ -124,7 +133,6 @@ class CustomTreeview:
         style = ttk.Style()
         style.configure("Treeview", font=font)
         style.configure("Treeview.Heading", font=font)
-        print(int(tree_size[1]))
         style.configure("Treeview", rowheight=int(tree_size[1]*2))
 
         

@@ -1,8 +1,8 @@
 from tkinter import *
 
 class Calculator:
-    def create_calculator(self, frame, frame_size):
-        _width, _height = frame_size[0], frame_size[1]
+    def create_calculator(self, frame):
+        _width, _height = frame["width"], frame["height"]
         _button_size = (int(_width*0.015), int(_height*0.004))
         _pad_w = int(_width*0.08)
         _pad_h = int(_height*0.1)
@@ -55,10 +55,11 @@ class Cashier:
         self.total.set("0")
         self.cash_input.set("0")
         self.change.set("0")
-
+        
+        # for treeview selection
         self.receipt = dict()
 
-        # For Selcet Category
+        # for selcet category
         self.radio_var = IntVar()
         self.radio_var.set(0)
 
@@ -67,9 +68,6 @@ class Cashier:
         self.casher_width, self.casher_height = frame_size[0], frame_size[1]
         self._create_checkout_info()
         self._create_checkout_buttons()
-
-    def _create_instructions(self):
-        pass
 
     def _create_checkout_info(self):
         labels = {
@@ -118,8 +116,8 @@ class Cashier:
             call_back=self.change_button_color)
 
 class Merchandise:
-    def create_category(self, frame, frame_size):
-        _width, _height = frame_size[0], frame_size[1]
+    def create_category(self, frame):
+        _width, _height = frame["width"], frame["height"]
         _button_size = (int(_width*0.03), int(_height*0.004))
         _pos_x, _pos_y = _button_size[0]*5, _button_size[1]*18
 
@@ -137,27 +135,28 @@ class Merchandise:
         }
         self.create_radio_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
-    def _iter_items(self, item_list, pads):
+    def _iter_items(self, item_list, pads, call_back_fcn, row_max=3):
         _output_dict = {}
         _x, _y = 0, 0
         for item in item_list:
-            if _y > 3:
+            if _y > row_max:
                 _x, _y = _x+1, 0
             _output_dict[item["name"]] = (_x, _y, pads[0], pads[1])
             _y += 1
 
-        _lambda_fcns = [lambda i=i:self.press_item(i) for i in item_list]
+        _lambda_fcns = [lambda i=i:call_back_fcn(i) for i in item_list]
         _call_back = dict(zip([i["name"] for i in item_list], _lambda_fcns))
 
         return _output_dict, _call_back
 
 
     def create_items(self, frame, selected_category):
-        _width, _height =self.item_frame_width, self.lower_parition
+        _width, _height = frame["width"], frame["height"]
         _padx, _pady = (int(_width*0.02), int(_height*0.02))
         _button_size = (int(_width*0.01), int(_height*0.007))
 
-        _buttons, _call_back = self._iter_items(self.items[selected_category], (_padx, _pady))
+        _buttons, _call_back = self._iter_items(self.items[selected_category], \
+            (_padx, _pady), self.press_item)
 
         _fonts = {
             "bg": "white",
@@ -166,9 +165,24 @@ class Merchandise:
         }
         self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
+    def create_options(self, frame, selected_category):
+        _width, _height = frame["width"], frame["height"]
+        _padx, _pady = (int(_width*0.02), int(_height*0.02))
+        _button_size = (int(_width*0.02), int(_height*0.005))
+
+        _buttons, _call_back = self._iter_items(self.options[selected_category], \
+            (_padx, _pady), self.press_option, row_max=1)
+
+        _fonts = {
+            "bg": "white",
+            "fg": "black",
+            "bd": 1
+        }
+        self.option_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts, _call_back)
+
 class Receipt:
-    def create_receipt(self, frame, frame_size):
-        _width, _height = frame_size[0], frame_size[1]
+    def create_receipt(self, frame):
+        _width, _height = frame["width"], frame["height"]
         tree_size = (int(_width*0.1), int(_height*0.043))
         frame.pack_propagate(False)
 
