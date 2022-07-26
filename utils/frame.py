@@ -81,7 +81,9 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
             bg="#6B6E70", cursor="circle")
         calculator_frame.grid(row=0, column=1, padx=0, pady=0)
 
+        calculator_frame.grid_propagate(False)
         self.create_calculator(calculator_frame)
+        self.create_function_buttons(calculator_frame)
 
     def set_checkout_frame(self):
         _width = self.max_w*0.3

@@ -1,26 +1,46 @@
 from tkinter import *
 
 class Calculator:
+    def create_function_buttons(self, frame):
+        _width, _height = frame["width"], frame["height"]
+        _button_size = (int(_width*0.01), int(_height*0.002))
+        _pad_w = int(_width*0.03)
+
+        _buttons = {
+                "加一項": (0, 0, _pad_w, 0),
+                "加十項": (0, 1, _pad_w, 0),
+                "減一項": (0, 2, _pad_w, 0),
+                "清空": (0, 3, _pad_w, 0)
+        }
+
+        _fonts = {
+            "bg": "white",
+            "fg": "black",
+            "bd": 1
+        }
+        self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts)
+
     def create_calculator(self, frame):
         _width, _height = frame["width"], frame["height"]
         _button_size = (int(_width*0.015), int(_height*0.004))
         _pad_w = int(_width*0.08)
         _pad_h = int(_height*0.1)
+        _h_adjust = int(_height*0.08)
         
         _buttons = {
-                "7": (_pad_w, _pad_h),
-                "8": (_pad_w+_button_size[0]*18, _pad_h),
-                "9": (_pad_w+_button_size[0]*36, _pad_h),
+                "7": (_pad_w, _h_adjust+_pad_h),
+                "8": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h),
+                "9": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h),
 
-                "4": (_pad_w, _pad_h*2+_button_size[1]*20),
-                "5": (_pad_w+_button_size[0]*18, _pad_h*2+_button_size[1]*20),
-                "6": (_pad_w+_button_size[0]*36, _pad_h*2+_button_size[1]*20),
+                "4": (_pad_w, _h_adjust+_pad_h*2+_button_size[1]*20),
+                "5": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*2+_button_size[1]*20),
+                "6": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h*2+_button_size[1]*20),
 
-                "1": (_pad_w, _pad_h*3+_button_size[1]*40),
-                "2": (_pad_w+_button_size[0]*18, _pad_h*3+_button_size[1]*40),
-                "3": (_pad_w+_button_size[0]*36, _pad_h*3+_button_size[1]*40),
+                "1": (_pad_w, _h_adjust+_pad_h*3+_button_size[1]*40),
+                "2": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*3+_button_size[1]*40),
+                "3": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h*3+_button_size[1]*40),
 
-                "0": (_pad_w, _pad_h*4+_button_size[1]*60),
+                "0": (_pad_w, _h_adjust+_pad_h*4+_button_size[1]*60),
             }
         
         _lambda_fcns = [lambda i=i:self.press_number(str(i)) for i in range(10)]
@@ -34,7 +54,7 @@ class Calculator:
         self.place_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
         _buttons = {
-            "清除": (_pad_w+_button_size[0]*18, _pad_h*4+_button_size[1]*60),
+            "清除": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*4+_button_size[1]*60),
         }
         _fonts = {
             "bg": "#6B6E70",
@@ -195,3 +215,4 @@ class Receipt:
 
         _font = ('Adobe 黑体 Std R', 20, 'normal')
         self.receipt_frame = self.create_treeview(frame, tree_size, tree_dict, _font)
+        
