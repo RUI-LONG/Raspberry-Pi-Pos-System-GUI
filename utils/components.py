@@ -8,9 +8,16 @@ class Calculator:
 
         _buttons = {
                 "加一項": (0, 0, _pad_w, 0),
-                "加十項": (0, 1, _pad_w, 0),
+                "加五項": (0, 1, _pad_w, 0),
                 "減一項": (0, 2, _pad_w, 0),
-                "清空": (0, 3, _pad_w, 0)
+                "刪除": (0, 3, _pad_w, 0)
+        }
+        _callback = {
+            "加一項": lambda: self.add_n_item(1),
+            "加五項": lambda: self.add_n_item(5),
+            "減一項": lambda:self.minus_one_item(),
+            "刪除": lambda: self.delete_item(),
+
         }
 
         _fonts = {
@@ -18,7 +25,7 @@ class Calculator:
             "fg": "black",
             "bd": 1
         }
-        self.item_buttons = self.grid_buttons(frame, _button_size, _buttons, _fonts)
+        self.grid_buttons(frame, _button_size, _buttons, _fonts, _callback)
 
     def create_calculator(self, frame):
         _width, _height = frame["width"], frame["height"]
