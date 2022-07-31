@@ -21,7 +21,7 @@ class Calculator:
             "bg": "white",
             "fg": "black",
             "bd": 3,
-            "font": ('Adobe 黑体 Std R', int(_width/37), 'normal')
+            "font": ('Adobe 黑体 Std R', int(_width/45), 'normal')
         }
         self.grid_buttons(frame, _button_size, _buttons, _fonts, _callback)
 
@@ -50,7 +50,7 @@ class Calculator:
             "bg": "white",
             "fg": "black",
             "bd": 3,
-            "font": ('Adobe 黑体 Std R', int(_width/37), 'normal')
+            "font": ('Adobe 黑体 Std R', int(_width/42), 'normal')
         }
 
         _call_back = {
