@@ -3,74 +3,75 @@ from tkinter import *
 class Calculator:
     def create_function_buttons(self, frame):
         _width, _height = frame["width"], frame["height"]
-        _button_size = (int(_width*0.01), int(_height*0.002))
-        _pad_w = int(_width*0.03)
-
+        _button_size = (int(_width*0.02), int(_height*0.03))
         _buttons = {
-                "加一項": (0, 0, _pad_w, 0),
-                "加五項": (0, 1, _pad_w, 0),
-                "減一項": (0, 2, _pad_w, 0),
-                "刪除": (0, 3, _pad_w, 0)
+                "加一項": (0, 0, 0, 0),
+                "加五項": (0, 1, 0, 0),
+                "減一項": (0, 2, 0, 0),
+                "刪除": (0, 3, 0, 0)
         }
         _callback = {
             "加一項": lambda: self.add_n_item(1),
             "加五項": lambda: self.add_n_item(5),
             "減一項": lambda:self.minus_one_item(),
             "刪除": lambda: self.delete_item(),
-
         }
 
         _fonts = {
             "bg": "white",
             "fg": "black",
-            "bd": 1
+            "bd": 3,
+            "font": ('Adobe 黑体 Std R', int(_width/37), 'normal')
         }
         self.grid_buttons(frame, _button_size, _buttons, _fonts, _callback)
 
     def create_calculator(self, frame):
         _width, _height = frame["width"], frame["height"]
-        _button_size = (int(_width*0.015), int(_height*0.004))
-        _pad_w = int(_width*0.08)
-        _pad_h = int(_height*0.1)
-        _h_adjust = int(_height*0.08)
-        
+        _button_size = (int(_width*0.027), int(_height*0.008))
+
         _buttons = {
-                "7": (_pad_w, _h_adjust+_pad_h),
-                "8": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h),
-                "9": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h),
+            "7" : (0, 0, 0, 0),
+            "8" : (0, 1, 0, 0),
+            "9" : (0, 2, 0, 0),
+            
+            "4" : (1, 0, 0, 0),
+            "5" : (1, 1, 0, 0),
+            "6" : (1, 2, 0, 0),
 
-                "4": (_pad_w, _h_adjust+_pad_h*2+_button_size[1]*20),
-                "5": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*2+_button_size[1]*20),
-                "6": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h*2+_button_size[1]*20),
+            "1" : (2, 0, 0, 0),
+            "2" : (2, 1, 0, 0),
+            "3" : (2, 2, 0, 0),
 
-                "1": (_pad_w, _h_adjust+_pad_h*3+_button_size[1]*40),
-                "2": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*3+_button_size[1]*40),
-                "3": (_pad_w+_button_size[0]*36, _h_adjust+_pad_h*3+_button_size[1]*40),
-
-                "0": (_pad_w, _h_adjust+_pad_h*4+_button_size[1]*60),
-            }
-        
-        _lambda_fcns = [lambda i=i:self.press_number(str(i)) for i in range(10)]
-        _call_back = dict(zip([str(i) for i in range(10)], _lambda_fcns))
-
+            "00" : (3, 0, 0, 0),
+            "0" : (3, 1, 0, 0),
+            "清除": (3, 2, 0, 0)
+        }
         _fonts = {
             "bg": "white",
             "fg": "black",
-            "bd": 2
+            "bd": 3,
+            "font": ('Adobe 黑体 Std R', int(_width/37), 'normal')
         }
-        self.place_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 
-        _buttons = {
-            "清除": (_pad_w+_button_size[0]*18, _h_adjust+_pad_h*4+_button_size[1]*60),
-        }
-        _fonts = {
-            "bg": "#6B6E70",
-            "fg": "white",
-            "bd": 2
-        }
-        self.place_buttons(frame, (_button_size[0]*2, _button_size[1]), _buttons, _fonts, \
-            {"清除": lambda: self.press_clear("0")})
+        _call_back = {
+            "7" : lambda: self.press_number("7"),
+            "8" : lambda: self.press_number("8"),
+            "9" : lambda: self.press_number("9"),
+            
+            "4" : lambda: self.press_number("4"),
+            "5" : lambda: self.press_number("5"),
+            "6" : lambda: self.press_number("6"),
 
+            "1" : lambda: self.press_number("1"),
+            "2" : lambda: self.press_number("2"),
+            "3" : lambda: self.press_number("3"),
+
+            "00" : lambda: self.press_number("00"),
+            "0" : lambda: self.press_number("0"),
+            "清除": lambda: self.press_clear("0")
+        }
+
+        self.grid_buttons(frame, _button_size, _buttons, _fonts, _call_back)
 class Cashier:
     def create_vaiables(self):
         self.unit = StringVar()

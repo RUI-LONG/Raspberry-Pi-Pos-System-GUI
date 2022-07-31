@@ -8,6 +8,8 @@ class Callback:
     def press_number(self, item):
         try:
             if self.cash_input.get() == "0":
+                if item == "00":
+                    item = 0
                 self.cash_input.set(str(item))
             else:
                 self.cash_input.set(self.cash_input.get()+str(item))

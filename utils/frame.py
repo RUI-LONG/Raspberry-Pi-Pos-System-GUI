@@ -75,15 +75,22 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
         self.create_receipt(receipt_frame)
 
     def set_calculator_frame(self):
-        _width = self.max_w*0.3
-        calculator_frame = Frame(self.lower_frame, bd=5, \
-            width=int(_width), height=self.h_parition, \
-            bg="#6B6E70", cursor="circle")
-        calculator_frame.grid(row=0, column=1, padx=0, pady=0)
+        _width = int(self.max_w*0.3)
+        _height = int(self.h_parition*0.2)
+        function_frame = Frame(self.lower_frame, bd=0, \
+            width=_width, height=_height, \
+            bg="#050505", cursor="circle")
+        function_frame.grid(row=0, column=1, padx=0, pady=0, sticky="n")
+        function_frame.grid_propagate(False)
+
+        calculator_frame = Frame(self.lower_frame, bd=0, \
+            width=_width, height=int(self.h_parition-_height), \
+            bg="#050505", cursor="circle")
+        calculator_frame.grid(row=0, column=1, padx=0, pady=0, sticky="s")
 
         calculator_frame.grid_propagate(False)
         self.create_calculator(calculator_frame)
-        self.create_function_buttons(calculator_frame)
+        self.create_function_buttons(function_frame)
 
     def set_checkout_frame(self):
         _width = self.max_w*0.3
