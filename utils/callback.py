@@ -57,36 +57,51 @@ class Callback:
         selected_item = self.receipt_frame.selection()
         if len(selected_item) > 0:
             _name = self.receipt_frame.item(selected_item[0])["values"][1]
-            if self.receipt.get(_name):
-                _index, _unit, _price, _iid = self.receipt.get(_name)
-                _new_unit = _unit + n
-                _new_price = int((_price / _unit) * _new_unit)
-                self.receipt_frame.item(_iid, text="blub", \
-                        values=(_index, _name, _new_unit, _new_price))
-                self.receipt.update(
-                    {_name: (_index, _new_unit, _new_price, _iid)}
-                )
+        elif len(self.receipt_frame.get_children()) > 0:
+            _name = self.receipt_frame.item(self.receipt_frame.get_children()[-1])["values"][1]
+        else:
+            return
+
+        if self.receipt.get(_name):
+            _index, _unit, _price, _iid = self.receipt.get(_name)
+            _new_unit = _unit + n
+            _new_price = int((_price / _unit) * _new_unit)
+            self.receipt_frame.item(_iid, text="blub", \
+                    values=(_index, _name, _new_unit, _new_price))
+            self.receipt.update(
+                {_name: (_index, _new_unit, _new_price, _iid)}
+            )
         self.cal_unit_and_total()                
 
     def minus_one_item(self):
         selected_item = self.receipt_frame.selection()
         if len(selected_item) > 0:
             _name = self.receipt_frame.item(selected_item[0])["values"][1]
-            if self.receipt.get(_name):
-                _item = self.receipt.get(_name)
-                if _item[1] <= 1:
-                    self.delete_item()
-                else:
-                    self.add_n_item(-1)
+        elif len(self.receipt_frame.get_children()) > 0:
+            _name = self.receipt_frame.item(self.receipt_frame.get_children()[-1])["values"][1]
+        else:
+            return
+        if self.receipt.get(_name):
+            _item = self.receipt.get(_name)
+            if _item[1] <= 1:
+                self.delete_item()
+            else:
+                self.add_n_item(-1)
         self.cal_unit_and_total()
 
     def delete_item(self):
         selected_item = self.receipt_frame.selection()
         if len(selected_item) > 0:
+            _loc = selected_item[0]
             _name = self.receipt_frame.item(selected_item[0])["values"][1]
-            self.receipt_frame.delete(selected_item[0])
-            self.receipt.pop(_name, None)
-            self.cal_unit_and_total()
+        elif len(self.receipt_frame.get_children()) > 0:
+            _loc = self.receipt_frame.get_children()[-1]
+            _name = self.receipt_frame.item(_loc)["values"][1]
+        else:
+            return
+        self.receipt_frame.delete(_loc)
+        self.receipt.pop(_name, None)
+        self.cal_unit_and_total()
     
     def press_option(self, option):
         if len(self.receipt) == 0:
