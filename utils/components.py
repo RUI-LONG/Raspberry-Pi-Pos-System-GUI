@@ -126,8 +126,8 @@ class Cashier:
         self.create_variables(self.casher_frame, var_size, var_dict)
 
     def _create_checkout_buttons(self):
-        _grid_x0, _grid_y0 = self.casher_width*0.03, self.casher_height*0.54
-        _grid_x1, _grid_y1 = self.casher_width*0.36, self.casher_height*0.72
+        _grid_x0, _grid_y0 = self.casher_width*0.03, self.casher_height*0.53
+        _grid_x1, _grid_y1 = self.casher_width*0.36, self.casher_height*0.71
 
         _buttons = {
             "折扣": (_grid_x0, _grid_y0),
@@ -135,10 +135,11 @@ class Cashier:
             "小計": (_grid_x0, _grid_y1),
             "結帳": (_grid_x1, _grid_y1),
         }
-        _button_size = (self.casher_width*0.015, self.casher_height*0.003)
+        _button_size = (self.casher_width*0.017, self.casher_height*0.004)
         _fonts = {
             "bg": "white",
             "fg": "black",
+            "bd": 5
         }
         self.place_buttons(self.casher_frame, _button_size, _buttons, _fonts, \
             call_back=self.change_button_color)

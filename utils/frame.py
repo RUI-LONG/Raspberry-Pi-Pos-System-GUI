@@ -102,4 +102,4 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
         checkout_frame.grid_propagate(False)
         self.create_casher(checkout_frame, (_width, self.h_parition))
         self.create_exit_button(checkout_frame, (_width*0.72, self.h_parition*0.03))
-        self.create_clear_receipt_button(checkout_frame, (_width*0.72, self.h_parition*0.23))
+        self.create_clear_receipt_button(checkout_frame, (_width*0.72, self.h_parition*0.26))

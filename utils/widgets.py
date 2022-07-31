@@ -6,19 +6,19 @@ class CustomButtons:
         self.button_font = font
 
     def create_exit_button(self, frame, position=(50, 50)):
-        _height = int(self.max_h*0.001)
-        _width = int(self.max_w*0.002)
+        _height = int(self.max_h*0.002)
+        _width = int(self.max_w*0.003)
         exit_button = Button(frame, command=self.root.destroy, \
-            text="離開", font=self.button_font, \
+            text="離開", font=self.button_font, bd=3, \
             height=_height, width=_width)
         exit_button.place(x=int(position[0]), y=int(position[1]))
 
     
     def create_clear_receipt_button(self, frame, position=(50, 50)):
-        _height = int(self.max_h*0.001)
-        _width = int(self.max_w*0.002)
+        _height = int(self.max_h*0.002)
+        _width = int(self.max_w*0.003)
         exit_button = Button(frame, command=self.clear_receipt, \
-            text="清除\n訂單", font=self.button_font, \
+            text="清除\n訂單", font=self.button_font, bd=3,\
             height=_height, width=_width)
         exit_button.place(x=int(position[0]), y=int(position[1]))
 
