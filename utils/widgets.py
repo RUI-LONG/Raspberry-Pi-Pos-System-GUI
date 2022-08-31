@@ -22,6 +22,14 @@ class CustomButtons:
             height=_height, width=_width)
         exit_button.place(x=int(position[0]), y=int(position[1]))
 
+    def create_checkout_button(self, frame, position=(50, 50)):
+        _height = int(self.max_h*0.002)
+        _width = int(self.max_w*0.003)
+        exit_button = Button(frame, command=self.checkout, \
+            text="結帳", font=self.button_font, bd=3,\
+            height=_height, width=_width)
+        exit_button.place(x=int(position[0]), y=int(position[1]))
+
     def _handle_font_dict(self, font_dict):
         if font_dict:
             return {

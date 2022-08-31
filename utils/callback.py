@@ -1,3 +1,6 @@
+from datetime import datetime
+from .data_loader import read_json, write_json
+
 def int2hex(num):
     return "I" + str(hex(num)).upper().replace("0X", "").zfill(3)
 
@@ -146,3 +149,28 @@ class Callback:
         self.cal_unit_and_total()
         self.change.set("0")
         self.cash_input.set("0")
+
+    def _save_history_receipt(self):
+        now = datetime.now()
+        date = now.strftime("%Y-%m-%d")
+        time = now.strftime("%H:%M:%S")
+        data_path = f"./data/{date}.json"
+
+        _history_data = read_json(data_path, create_new=True)
+        if not isinstance(_history_data, list):
+            _history_data = []
+        
+        _history_data.append({
+            "receipt_count": len(_history_data) + 1,
+            "date": date,
+            "time": time,
+            "total": self.total.get(),
+            "receipt": self.receipt
+        })
+        write_json(_history_data, data_path)
+
+    def checkout(self):
+        if len(self.receipt) == 0:
+            return
+        self._save_history_receipt()
+        self.clear_receipt()

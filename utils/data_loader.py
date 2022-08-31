@@ -1,11 +1,13 @@
 import json
 
-def read_json(file_name):
+def read_json(file_name, create_new=False):
     try:
         with open(file_name, "r", encoding="utf-8") as file:
             data = json.load(file)
         return data
     except:
+        if create_new:
+            write_json({}, file_name)
         return {}
 
 def write_json(data, file_name):

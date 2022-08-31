@@ -91,11 +91,18 @@ class Cashier:
         self.radio_var = IntVar()
         self.radio_var.set(0)
 
+        # for open order window
+        self.order_window = None
+
+        # for historical order search
+        self.history_data = {}
+        self.date_select = StringVar()
+
     def create_casher(self, frame, frame_size):
         self.casher_frame = frame
         self.casher_width, self.casher_height = frame_size[0], frame_size[1]
         self._create_checkout_info()
-        self._create_checkout_buttons()
+        self._create_function_buttons()
 
     def _create_checkout_info(self):
         labels = {
@@ -125,15 +132,15 @@ class Cashier:
         var_size = (self.casher_width*0.025, self.casher_height*0.003)
         self.create_variables(self.casher_frame, var_size, var_dict)
 
-    def _create_checkout_buttons(self):
+    def _create_function_buttons(self):
         _grid_x0, _grid_y0 = self.casher_width*0.03, self.casher_height*0.53
         _grid_x1, _grid_y1 = self.casher_width*0.36, self.casher_height*0.71
 
         _buttons = {
-            "折扣": (_grid_x0, _grid_y0),
-            "信用卡": (_grid_x1, _grid_y0),
-            "小計": (_grid_x0, _grid_y1),
-            "結帳": (_grid_x1, _grid_y1),
+            "歷史訂單": (_grid_x0, _grid_y1)
+        }
+        _callback = {
+            "歷史訂單": lambda :self.create_order_window(self.root)
         }
         _button_size = (self.casher_width*0.017, self.casher_height*0.004)
         _fonts = {
@@ -142,7 +149,7 @@ class Cashier:
             "bd": 5
         }
         self.place_buttons(self.casher_frame, _button_size, _buttons, _fonts, \
-            call_back=self.change_button_color)
+            call_back=_callback)
 
 class Merchandise:
     def create_category(self, frame):

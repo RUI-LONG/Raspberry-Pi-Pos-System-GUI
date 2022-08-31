@@ -2,9 +2,10 @@ from tkinter import *
 from .widgets import CustomButtons, CustomLabels, CustomVariables, CustomTreeview
 from .components import Calculator, Cashier, Merchandise, Receipt
 from .callback import Callback
+from .history_orders import HistoryOrders
 
 class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview, \
-        Callback, Calculator, Cashier, Merchandise, Receipt):
+        Callback, Calculator, Cashier, Merchandise, Receipt, HistoryOrders):
     def set_all_frames(self):
         # 1 layer
         self.seperate_main_frame()
@@ -24,11 +25,11 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
         self.main_frame.grid(padx=0, pady=0)
         
         # Seperate to upper & lower frame
-        self.h_parition = int(self.max_h*0.45)
-        self.lower_parition = int(self.max_h-self.h_parition)
+        self.upper_parition = int(self.max_h*0.45)
+        self.lower_parition = int(self.max_h-self.upper_parition)
 
         self.lower_frame = Frame(self.main_frame, bd=0, \
-            width=self.max_w, height=self.h_parition, bg="#050505")
+            width=self.max_w, height=self.upper_parition, bg="#050505")
         self.lower_frame.pack(side="bottom")
 
         self.upper_frame = Frame(self.main_frame, bd=0, \
@@ -69,23 +70,23 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
     def set_receipt_frame(self):
         _width = self.max_w*0.4
         receipt_frame = LabelFrame(self.lower_frame, bd=5, \
-            width=int(_width), height=self.h_parition, \
+            width=int(_width), height=self.upper_parition, \
             bg="white", relief="flat")
         receipt_frame.grid(row=0, column=0, padx=15, pady=0)
         self.create_receipt(receipt_frame)
 
     def set_calculator_frame(self):
         _width = int(self.max_w*0.3)
-        _height = int(self.h_parition*0.2)
+        _height = int(self.upper_parition*0.2)
         function_frame = Frame(self.lower_frame, bd=0, \
             width=_width, height=_height, \
-            bg="#050505", cursor="circle")
+            bg="#6B6E70", cursor="circle")
         function_frame.grid(row=0, column=1, padx=0, pady=0, sticky="n")
         function_frame.grid_propagate(False)
 
         calculator_frame = Frame(self.lower_frame, bd=0, \
-            width=_width, height=int(self.h_parition-_height), \
-            bg="#050505", cursor="circle")
+            width=_width, height=int(self.upper_parition-_height), \
+            bg="#6B6E70", cursor="circle")
         calculator_frame.grid(row=0, column=1, padx=0, pady=0, sticky="s")
 
         calculator_frame.grid_propagate(False)
@@ -95,11 +96,12 @@ class frameSettings(CustomButtons, CustomLabels, CustomVariables, CustomTreeview
     def set_checkout_frame(self):
         _width = self.max_w*0.3
         checkout_frame = Frame(self.lower_frame, bd=5, \
-            width=int(_width), height=self.h_parition, \
+            width=int(_width), height=self.upper_parition, \
             bg="#404040", cursor="circle")
         checkout_frame.grid(row=0, column=2, padx=15, pady=0)
 
         checkout_frame.grid_propagate(False)
-        self.create_casher(checkout_frame, (_width, self.h_parition))
-        self.create_exit_button(checkout_frame, (_width*0.70, self.h_parition*0.03))
-        self.create_clear_receipt_button(checkout_frame, (_width*0.70, self.h_parition*0.26))
+        self.create_casher(checkout_frame, (_width, self.upper_parition))
+        self.create_exit_button(checkout_frame, (_width*0.70, self.upper_parition*0.03))
+        self.create_clear_receipt_button(checkout_frame, (_width*0.70, self.upper_parition*0.26))
+        self.create_checkout_button(checkout_frame, (_width*0.70, self.upper_parition*0.63))
