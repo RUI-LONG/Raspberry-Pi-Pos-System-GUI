@@ -3,7 +3,7 @@ from os.path import isfile, join
 from datetime import datetime
 from turtle import width
 from .data_loader import read_json
-from tkinter import Toplevel, Frame, Label, Button, OptionMenu
+from tkinter import Toplevel, Frame, Label, Button, OptionMenu, font
 
 class OrderPanelCallBack:
     def change_order_date(self, *args):
@@ -41,7 +41,7 @@ class OrderPanels(OrderPanelCallBack):
         self.date_select.set(date)
         _text += f"\n顯示日期:"
         _label = Label(frame, text=_text)
-        _label.config(font=("Courier", 11))
+        _label.config(font=("Courier", 13))
         _label.pack(side='top', fill="both")
 
     def _get_file_list(self):
@@ -56,8 +56,11 @@ class OrderPanels(OrderPanelCallBack):
         options = list(set(options))
         menu = OptionMenu(frame, self.date_select, *options, \
             command=self.change_order_date)
-        menu.config(width=width, height=int(self.window_height/200))
+        menu.config(width=width, height=int(self.window_height/150))
         menu.config(bd=3)
+
+        items = frame.nametowidget(menu.menuname)
+        items.config(font=font.Font(family='Helvetica', size=15))
         menu.pack()
 
     def _create_labels(self, frame):
