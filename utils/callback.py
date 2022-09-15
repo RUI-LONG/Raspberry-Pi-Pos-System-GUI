@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 from .data_loader import read_json, write_json
 
@@ -154,7 +155,7 @@ class Callback:
         now = datetime.now()
         date = now.strftime("%Y-%m-%d")
         time = now.strftime("%H:%M:%S")
-        data_path = f"./data/{date}.json"
+        data_path = f"{os.getcwd()}/data/{date}.json"
 
         _history_data = read_json(data_path, create_new=True)
         if not isinstance(_history_data, list):

@@ -1,3 +1,4 @@
+import os
 from os import listdir
 from os.path import isfile, join
 from datetime import datetime
@@ -116,7 +117,7 @@ class HistoryOrders(OrderPanels):
         return _label
 
     def pase_order_data(self, index=0):
-        self.history_data = read_json(f"./data/{self._search_date}.json")
+        self.history_data = read_json(f"{os.getcwd()}/data/{self._search_date}.json")
 
         for n in range(7):
             _frame = Frame(self.order_window, height=self.window_height, \

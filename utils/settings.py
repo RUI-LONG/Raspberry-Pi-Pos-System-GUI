@@ -1,8 +1,9 @@
+import os
 from .data_loader import read_json, write_json
 
 class Settings:
     def load_configs(self):
-        self._config_path = "./configs/"
+        self._config_path = f"{os.getcwd()}/configs/"
         self._load_configs()
         self._get_screen_info()
 
@@ -24,7 +25,7 @@ class Settings:
         self.max_w = self.config["screen_width"]
         self.max_h = self.config["screen_height"]
 
-        if self.config.get("full_screen"): 
-            self.set_full_screen()
-        else:
-            self.root.geometry("1350x750+0+0")
+        # if self.config.get("full_screen"): 
+        self.set_full_screen()
+        # else:
+        #     self.root.geometry("1350x750+0+0")
