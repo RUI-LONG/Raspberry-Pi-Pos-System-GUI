@@ -12,7 +12,7 @@ class OrderPanelCallBack:
             self._scroll_index = 0
             self._search_date = args[0]
             self.pase_order_data()
-            self.create_order_panel()
+            self.create_order_panel(date_select=args[0])
 
     def exit_order_pannel(self):
         if self.order_window:
@@ -88,12 +88,14 @@ class OrderPanels(OrderPanelCallBack):
             text=">", font=('Adobe 黑体 Std R', 25, 'normal'))
         button.pack(side='right')
 
-    def create_order_panel(self):
+    def create_order_panel(self, date_select=None):
         _frame = Frame(self.order_window, height=self.window_height, \
             width=self.panel_width, highlightthickness=2, highlightbackground="#6B6E70")
         _frame.pack_propagate(False)
         _frame.place(x=self.window_width-self.panel_width, y=0)
         self._create_date_label(_frame)
+        if date_select != None:
+            self.date_select.set(date_select)
         self._create_option_menu(_frame, self.panel_width)
         self._create_labels(_frame)
         self._create_buttons(_frame)
